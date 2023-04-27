@@ -8,8 +8,7 @@ export default function Home() {
         <link rel="stylesheet" href="/postcss/global.css" />
       </Head>
       <main> 
-        {/* <h1 class="gradient-text ">OpenProps in Deno Fresh</h1> */}
-        <h1>OpenProps in Deno Fresh</h1>
+        <h1 class="gradient-text ">OpenProps in Deno Fresh</h1>
       </main>
     </>
   );

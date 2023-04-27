@@ -47,10 +47,15 @@ export async function processAndCacheCss(
 /**
  * Process css files and store them in css cache at server start
  */
-export async function prefillCssCache() {
-  const cssFileEntries = fs.expandGlob("css/*.css", { root: Deno.cwd() });
+export async function prefillCssCache(options?: {
+  cssInputPath?: string;
+}) {
+  const inputPath = options?.cssInputPath ?? "css";
+  console.debug(`Prefill Function: Transforming and Caching all css files in '${inputPath}'`);
+  const cssFileEntries = fs.expandGlob(`${inputPath}/*.css`, { root: Deno.cwd() });
   for await (const file of cssFileEntries) {
     const fsPath = file.path;
+    console.debug(`Prefill ` + fsPath);
     const loadedCss = await loadCss(fsPath);
     await processAndCacheCss(loadedCss);
   }

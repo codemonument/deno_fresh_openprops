@@ -2,6 +2,10 @@ body {
     background: var(--gray-10);
 }
 
+h1 {
+    font-family: var(--font-sans);
+}
+
 .gradient-text {
     background: var(--gradient-18);
     -webkit-background-clip: text;
