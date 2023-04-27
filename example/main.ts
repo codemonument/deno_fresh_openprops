@@ -1,10 +1,10 @@
-import {} from "@mod";
-import { VERSION } from "@version";
-import { log } from "@deps/std_log.ts";
+/// <reference no-default-lib="true" />
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
+/// <reference lib="dom.asynciterable" />
+/// <reference lib="deno.ns" />
 
-try {
-  log.info(`Module Version (version.ts): ${VERSION}`);
-} catch (error) {
-  console.error(error);
-  Deno.exit();
-}
+import { start } from "$fresh/server.ts";
+import manifest from "./fresh.gen.ts";
+
+await start(manifest);
