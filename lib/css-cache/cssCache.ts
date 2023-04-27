@@ -31,20 +31,13 @@ export async function loadCss(fsPath: string) {
   return { fsPath, rawCssContent, fileHash };
 }
 
-export async function loadCssIntoCache(fsPath: string) {
-  // Load input css file
-  const rawCssContent = await Deno.readTextFile(fsPath);
-
-  // Calc SHA256
-  const rawCssBytes = new TextEncoder().encode(rawCssContent);
-  const fileHashBytes = await crypto.subtle.digest("SHA-256", rawCssBytes);
-  const fileHash = encodeBase64(fileHashBytes);
-
+export async function processAndCacheCss(
+  { fsPath, fileHash, rawCssContent }: Awaited<ReturnType<typeof loadCss>>,
+) {
   const processingResult = await postcssInstance.process(rawCssContent, {
     from: fsPath,
   });
   cssCache.set(fileHash, processingResult.css);
-
   console.debug(`PostCSS Transformed and Cached: ${fsPath}`, { fileHash });
 }
 
@@ -55,7 +48,8 @@ export async function prefillCssCache() {
   const cssFileEntries = fs.expandGlob("css/*.css", { root: Deno.cwd() });
   for await (const file of cssFileEntries) {
     const fsPath = file.path;
-    await loadCssIntoCache(fsPath);
+    const loadedCss = await loadCss(fsPath);
+    await processAndCacheCss(loadedCss);
   }
 
   // don't transform entries in static assets

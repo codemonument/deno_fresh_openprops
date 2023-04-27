@@ -1,10 +1,11 @@
 import { assert, describe, it } from "@testing";
-import { cssCache, loadCssIntoCache, prefillCssCache } from "@mod";
+import { cssCache, loadCss, prefillCssCache, processAndCacheCss } from "@mod";
 
 describe(`mod.ts`, () => {
   it(`should export correct objects and types`, () => {
     assert(cssCache);
-    assert(loadCssIntoCache);
+    assert(processAndCacheCss);
     assert(prefillCssCache);
+    assert(loadCss);
   });
 });
