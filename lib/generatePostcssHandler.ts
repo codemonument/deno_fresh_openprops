@@ -49,14 +49,18 @@ export function generatePostcssHandler(inputPath = "css", isProd = false) {
     // Check cache
     if (!await cssCache.has(fileHash)) {
       // On cache miss: process css file and cache it
-      processAndCacheCss({ fsPath, rawCssContent, fileHash });
+      await processAndCacheCss({ fsPath, rawCssContent, fileHash });
     }
 
     // Get storedCSS from cache
     const storedCSSResult = z.string().safeParse(await cssCache.get(fileHash));
 
     if (storedCSSResult.success === false) {
-      return ctx.renderNotFound();
+      return new Response(null, {
+        status: 500,
+        statusText:
+          "Css not available in cache after processing, should not happen!",
+      });
     }
 
     logger.debug(`PostCSS found in cache: ${fsPath}`, { fileHash });
