@@ -10,6 +10,7 @@ h1 {
     font-family: var(--font-sans);
     font-size: var(--size-header-1);
     text-align: center;
+    animation: var(--animation-fade-in-bloom) forwards;
 }
 
 .gradient-text {
