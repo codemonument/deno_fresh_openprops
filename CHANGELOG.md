@@ -1,5 +1,9 @@
 # Changelog 
 
+## 1.0.1 - 2023-04-27 
+
+- Improved Readme
+
 ## 1.0.0 - 2023-04-27 
 
 - Initial implementation finished 
