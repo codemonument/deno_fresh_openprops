@@ -21,6 +21,8 @@
      * Docs for Deno Tasks: https://deno.land/manual@v1.27.1/tools/task_runner
      */
     "tasks": {
-        "start": "deno run --unstable example/main.ts"
+        "start": "deno run --unstable example/main.ts",
+        "download-openprops": "deno run --allow-net --allow-write --allow-read ./download-openprops.ts 1.5.8 --outPath example/css_deps/open-props"
+    
     }
 }
