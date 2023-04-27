@@ -4,4 +4,3 @@
  */
 
 export * from "./lib/css-cache/cssCache.ts"
-export * from "./lib/css-cache/prefillCssCache.ts"
