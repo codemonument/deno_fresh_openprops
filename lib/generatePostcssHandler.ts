@@ -1,7 +1,13 @@
 import type { HandlerContext } from "https://deno.land/x/fresh@1.1.5/server.ts";
 import { log } from "../deps/std.ts";
 import { z } from "../deps/zod.ts";
-import { cssCache, loadCss, processAndCacheCss } from "../mod.ts";
+import {
+  cssCache,
+  initPostcssInstance,
+  loadCss,
+  postcssInstancePromise,
+  processAndCacheCss,
+} from "../mod.ts";
 
 log.setup({
   handlers: {
@@ -22,7 +28,19 @@ const logger = log.getLogger("postcss_route");
  * @param isProd if true, adds a caching header for the generated css file
  * #@returns
  */
-export function generatePostcssHandler(inputPath = "css", isProd = false) {
+export async function generatePostcssHandler(
+  options?: {
+    cssInputPath?: string;
+    isProd?: boolean;
+    postcssModuleDirs?: string[];
+  },
+) {
+  const inputPath = options?.cssInputPath ?? "css";
+  const isProd = options?.isProd ?? false;
+
+  // Should only happen once, since this generate Route handler should only run once
+  await initPostcssInstance(options?.postcssModuleDirs);
+
   return async (
     req: Request,
     ctx: HandlerContext,

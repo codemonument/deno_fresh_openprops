@@ -1,6 +1,6 @@
 import { kvsMemoryStorage } from "../../deps/kvs_memorystorage.ts";
 import { encodeBase64, fs } from "../../deps/std.ts";
-import { postcssInstance } from "./postcssInstance.ts";
+import { postcssInstancePromise } from "./postcssInstance.ts";
 
 /**
  * A in-memory key-value storage for deno to cache postcss-transformed css files
@@ -34,6 +34,9 @@ export async function loadCss(fsPath: string) {
 export async function processAndCacheCss(
   { fsPath, fileHash, rawCssContent }: Awaited<ReturnType<typeof loadCss>>,
 ) {
+  // Note: will only resolve when initPostcssInstance is called exactly once!
+  const postcssInstance = await postcssInstancePromise;
+
   const processingResult = await postcssInstance.process(rawCssContent, {
     from: fsPath,
   });

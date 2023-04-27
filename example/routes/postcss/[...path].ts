@@ -1,3 +1,6 @@
 import { generatePostcssHandler } from "../../../mod.ts";
 
-export const handler = generatePostcssHandler("example/css");
+export const handler = await generatePostcssHandler({
+  cssInputPath: "./example/css",
+  postcssModuleDirs: ["example/css_deps"],
+});

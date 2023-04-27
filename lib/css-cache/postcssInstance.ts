@@ -7,9 +7,31 @@ import postcssJitProps from "https://esm.sh/postcss-jit-props@1.0.13";
 // See: https://www.npmjs.com/package/open-props
 import { OpenProps } from "../../deps/openprops.ts";
 
-export const postcssInstance = postcss([
-  postcssImport({
-    addModulesDirectories: ["css_deps"],
-  }),
-  postcssJitProps(OpenProps),
-]);
+import pDefer from "https://esm.sh/p-defer@4.0.0";
+
+const deferred = pDefer<ReturnType<typeof postcss>>();
+
+export const postcssInstancePromise = deferred.promise;
+
+/**
+ * CAUTION: This can only be called once per application initialization
+ * @param options
+ */
+export async function initPostcssInstance(
+  additionalModuleDirectories?: string[],
+) {
+  const additionalModuleDirs = additionalModuleDirectories ?? [];
+  const instance = postcss([
+    postcssImport({
+      addModulesDirectories: [
+        ...additionalModuleDirs,
+        "css_deps",
+      ],
+    }),
+    postcssJitProps(OpenProps),
+  ]);
+
+  deferred.resolve(instance);
+
+  await postcssInstancePromise;
+}
