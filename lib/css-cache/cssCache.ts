@@ -13,6 +13,24 @@ export const cssCache = await kvsMemoryStorage({
   version: 1,
 });
 
+/**
+ * Loads a css file from a path
+ * and calculates it's sha-256 hash for further use
+ * @param fsPath
+ * @returns
+ */
+export async function loadCss(fsPath: string) {
+  // Load input css file
+  const rawCssContent = await Deno.readTextFile(fsPath);
+
+  // Calc SHA256
+  const rawCssBytes = new TextEncoder().encode(rawCssContent);
+  const fileHashBytes = await crypto.subtle.digest("SHA-256", rawCssBytes);
+  const fileHash = encodeBase64(fileHashBytes);
+
+  return { fsPath, rawCssContent, fileHash };
+}
+
 export async function loadCssIntoCache(fsPath: string) {
   // Load input css file
   const rawCssContent = await Deno.readTextFile(fsPath);
