@@ -22,7 +22,7 @@
      */
   "tasks": {
     "start": "deno task example",
-    "example": "deno run -A --watch=example/static/,example/routes/ example/dev.ts",
+    "example": "deno run -A --watch=example/static/,example/routes/,example/css example/dev.ts",
     "download-openprops": "deno run --allow-net --allow-write --allow-read ./download-openprops.ts 1.5.8 --outPath example/css_deps/open-props"
   }
 }
