@@ -4,6 +4,10 @@
 
 A Deno library by @codemonument to help integrating openprops with Deno's web framework 'fresh'.
 
+## Links 
+
+[GitHub](https://github.com/codemonument/deno_fresh_openprops) | [Deno.Land/x](https://deno.land/x/fresh_openprops) | [Example Deployment](https://fresh-openprops.deno.dev/)
+
 ## Usage 
 
 1. Create a folder called `css` on the top level of your repo, for all your css files which should have openprops available 
@@ -49,10 +53,3 @@ A Deno library by @codemonument to help integrating openprops with Deno's web fr
 ## When having issues 
 
 Please report all of your issues at GitHub here: https://github.com/codemonument/deno_fresh_openprops/issues
-
-## Useful Links 
-
-- Github: https://github.com/codemonument/deno_fresh_openprops
-- Example Deployment: https://fresh-openprops.deno.dev/
-- Deno.Land/x: https://deno.land/x/fresh_openprops
-- 
