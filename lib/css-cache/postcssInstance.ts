@@ -3,10 +3,9 @@
 import postcss from "https://deno.land/x/postcss@8.4.16/mod.js";
 import postcssImport from "https://esm.sh/postcss-import@15.1.0";
 import postcssJitProps from "https://esm.sh/postcss-jit-props@1.0.13";
-
 // See: https://www.npmjs.com/package/open-props
-import { OpenProps } from "../../deps/openprops.ts";
-
+// IMPORTANT: do not re-export this url from a deps.ts file, will break!
+import OpenProps from "https://esm.sh/open-props@1.5.8";
 import pDefer from "https://esm.sh/p-defer@4.0.0";
 
 const deferred = pDefer<ReturnType<typeof postcss>>();

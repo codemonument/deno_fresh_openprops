@@ -5,7 +5,6 @@ import {
   cssCache,
   initPostcssInstance,
   loadCss,
-  postcssInstancePromise,
   processAndCacheCss,
 } from "../mod.ts";
 
