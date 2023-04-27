@@ -1,1 +1,1 @@
-export * as OpenProps from "https://esm.sh/v114/open-props@1.5.8";
+export * as OpenProps from "https://esm.sh/open-props@1.5.8";
