@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 - 2023-07-05 
+
+- Adjust documentation presentation on deno land x for download-openprops
+
 ## 1.0.2 - 2023-07-01
 
 - Add denoLandX description to download-openprops script
