@@ -1,11 +1,10 @@
-import { ensureDir } from "https://deno.land/std@0.178.0/fs/mod.ts";
-import { join } from "https://deno.land/std@0.178.0/path/mod.ts";
 import {
   ArgumentValue,
   Command,
 } from "https://deno.land/x/cliffy@v0.25.7/mod.ts";
 import { ZodSemver } from "https://deno.land/x/zod_semver@1.1.0/mod.ts";
-import { downloadOpenprops } from "./mod.ts";
+// CAUTION: Do not import via ./mod.ts, otherwise this script needs dependency access to $fresh! :O
+import { downloadOpenprops } from "./src/utils/download_openprops.ts";
 
 /**
  * This file is a little cliffy command line script to download a specific version of openprops into the local repositiory
