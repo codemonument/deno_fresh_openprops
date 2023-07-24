@@ -5,6 +5,7 @@ import postcssImport from "https://esm.sh/postcss-import@15.1.0";
 import postcssJitProps from "https://esm.sh/postcss-jit-props@1.0.13";
 import pDefer from "https://esm.sh/p-defer@4.0.0";
 import { log } from "../deps/std.ts";
+import { getLatestOpenProps } from "../utils/getLatestOpenProps.ts";
 // Note: OpenProps is imported dynamically below!
 
 const deferred = pDefer<ReturnType<typeof postcss>>();
@@ -21,22 +22,12 @@ export async function initPostcssInstance(
   const logger = log.getLogger("FreshOpenProps");
 
   // Dynamic import OpenProps
-  // See: https://www.npmjs.com/package/open-props
-  const openPropsLatestVersion = await fetch("https://esm.sh/open-props").then(
-    async (res) => {
-      const content = await res.text();
-      const firstLine = content.split("\n")[0];
-      const dirtyVersion = firstLine.split("@")[1];
-      const cleanVersion = dirtyVersion.split(" ")[0];
-      return cleanVersion;
-    },
-  ).catch((err) => logger.error(err));
-
   const openPropsUrl = (openPropsVersion === "latest")
     ? `https://esm.sh/open-props`
     : `https://esm.sh/open-props@${openPropsVersion}`;
   const OpenPropsDynamic = await import(openPropsUrl);
 
+  const openPropsLatestVersion = await getLatestOpenProps();
   logger.info(
     `PostCSS init with OpenProps Version ${
       openPropsVersion === "latest" ? openPropsLatestVersion : openPropsVersion
