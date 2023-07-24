@@ -3,10 +3,9 @@
 import postcss from "https://deno.land/x/postcss@8.4.16/mod.js";
 import postcssImport from "https://esm.sh/postcss-import@15.1.0";
 import postcssJitProps from "https://esm.sh/postcss-jit-props@1.0.13";
-// See: https://www.npmjs.com/package/open-props
-// IMPORTANT: do not re-export this url from a deps.ts file, will break!
-import OpenProps from "https://esm.sh/open-props@1.5.10";
 import pDefer from "https://esm.sh/p-defer@4.0.0";
+import { log } from "../deps/std.ts";
+// Note: OpenProps is imported dynamically below!
 
 const deferred = pDefer<ReturnType<typeof postcss>>();
 export const postcssInstancePromise = deferred.promise;
@@ -17,7 +16,35 @@ export const postcssInstancePromise = deferred.promise;
  */
 export async function initPostcssInstance(
   additionalModuleDirectories?: string[],
+  openPropsVersion: "latest" | string = "latest",
 ) {
+  const logger = log.getLogger("FreshOpenProps");
+
+  // Dynamic import OpenProps
+  // See: https://www.npmjs.com/package/open-props
+  const openPropsLatestVersion = await fetch("https://esm.sh/open-props").then(
+    async (res) => {
+      const content = await res.text();
+      const firstLine = content.split("\n")[0];
+      const dirtyVersion = firstLine.split("@")[1];
+      const cleanVersion = dirtyVersion.split(" ")[0];
+      return cleanVersion;
+    },
+  ).catch((err) => logger.error(err));
+
+  const openPropsUrl = (openPropsVersion === "latest")
+    ? `https://esm.sh/open-props`
+    : `https://esm.sh/open-props@${openPropsVersion}`;
+  const OpenPropsDynamic = await import(openPropsUrl);
+
+  logger.info(
+    `PostCSS init with OpenProps Version ${
+      openPropsVersion === "latest" ? openPropsLatestVersion : openPropsVersion
+    } (latest: ${openPropsLatestVersion})`,
+  );
+
+  // console.log(Object.keys(OpenPropsDynamic.default));
+
   const additionalModuleDirs = additionalModuleDirectories ?? [];
   const instance = postcss([
     postcssImport({
@@ -26,7 +53,7 @@ export async function initPostcssInstance(
         "css_deps",
       ],
     }),
-    postcssJitProps(OpenProps),
+    postcssJitProps(OpenPropsDynamic.default),
   ]);
 
   deferred.resolve(instance);
