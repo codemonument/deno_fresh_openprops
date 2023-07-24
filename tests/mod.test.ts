@@ -1,4 +1,4 @@
-import { assert, describe, it } from "@testing";
+import { assert, describe, it } from "./deps.ts";
 import * as mod from "@mod";
 
 describe(`mod.ts`, () => {
