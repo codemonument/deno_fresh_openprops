@@ -14,7 +14,7 @@ await start(manifest, {
       isProd: false,
       doPrefillCssCache: true,
       cssInputPath: "example/css",
-      postcssModuleBaseDir: 'example/css_deps', 
+      postcssModuleBaseDir: "example/css_deps",
     }),
   ],
 });
