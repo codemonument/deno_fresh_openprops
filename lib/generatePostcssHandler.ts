@@ -1,6 +1,6 @@
-import type { HandlerContext } from "https://deno.land/x/fresh@1.1.5/server.ts";
-import { log } from "../deps/std.ts";
-import { z } from "../deps/zod.ts";
+import type { HandlerContext } from "./deps/fresh.ts";
+import { log } from "./deps/std.ts";
+import { z } from "./deps/zod.ts";
 import {
   cssCache,
   initPostcssInstance,

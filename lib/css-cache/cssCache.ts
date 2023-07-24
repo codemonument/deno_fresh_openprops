@@ -1,5 +1,5 @@
-import { kvsMemoryStorage } from "../../deps/kvs_memorystorage.ts";
-import { encodeBase64, fs } from "../../deps/std.ts";
+import { kvsMemoryStorage } from "../deps/kvs_memorystorage.ts";
+import { encodeBase64, fs } from "../deps/std.ts";
 import { postcssInstancePromise } from "./postcssInstance.ts";
 
 /**
@@ -51,8 +51,12 @@ export async function prefillCssCache(options?: {
   cssInputPath?: string;
 }) {
   const inputPath = options?.cssInputPath ?? "css";
-  console.debug(`Prefill Function: Transforming and Caching all css files in '${inputPath}'`);
-  const cssFileEntries = fs.expandGlob(`${inputPath}/*.css`, { root: Deno.cwd() });
+  console.debug(
+    `Prefill Function: Transforming and Caching all css files in '${inputPath}'`,
+  );
+  const cssFileEntries = fs.expandGlob(`${inputPath}/*.css`, {
+    root: Deno.cwd(),
+  });
   for await (const file of cssFileEntries) {
     const fsPath = file.path;
     console.debug(`Prefill ` + fsPath);
