@@ -8,6 +8,7 @@
 
 export * from "./src/css-cache/cssCache.ts";
 export * from "./src/css-cache/postcssInstance.ts";
+export * from "./src/utils/download_openprops.ts";
 
 // legacy, should be replaced by the fresh_openprops_plugin
 export * from "./src/generatePostcssHandler.ts";

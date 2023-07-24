@@ -4,7 +4,8 @@ import {
   ArgumentValue,
   Command,
 } from "https://deno.land/x/cliffy@v0.25.7/mod.ts";
-import { ZodSemver } from "https://deno.land/x/zod_semver@1.0.2/mod.ts";
+import { ZodSemver } from "https://deno.land/x/zod_semver@1.1.0/mod.ts";
+import { downloadOpenprops } from "./mod.ts";
 
 /**
  * This file is a little cliffy command line script to download a specific version of openprops into the local repositiory
@@ -23,7 +24,7 @@ export const fileDescription =
 await new Command()
   .name("download-openprops")
   .description(
-    `Downloads the specified version of openprops into a local directory for further use`,
+    `Downloads the specified version of openprops into a local directory for further use. Default version is 'latest', which downloads the latest version automatically. `,
   )
   .option(
     "- --outPath <outPath>",
@@ -32,31 +33,15 @@ await new Command()
   .type("semver", ({ label, name, value }: ArgumentValue) => {
     return ZodSemver.parse(value);
   })
-  .arguments("<openpropsVersion:semver>")
+  .arguments("[openpropsVersion:semver]")
   .action(async (options, ...args) => {
-    // Find Latest version via: https://unpkg.com/open-props
+    // For 'latest' version, simply pass no version at all.
+    // Alternative: Find latest version manually via: https://unpkg.com/open-props
     const [version] = args;
-    const baseUrl = `https://unpkg.com/open-props@${version}`;
-    const targetDir = options.outPath ?? `css_deps/open-props`;
-
-    await ensureDir(targetDir);
-    const openPropsMin = await (await fetch(`${baseUrl}/open-props.min.css`))
-      .text();
-    await Deno.writeTextFile(
-      join(targetDir, "open-props.min.css"),
-      openPropsMin,
-    );
-
-    const normalize = await (await fetch(`${baseUrl}/normalize.min.css`))
-      .text();
-    await Deno.writeTextFile(join(targetDir, "normalize.min.css"), normalize);
-
-    const buttons = await (await fetch(`${baseUrl}/buttons.min.css`))
-      .text();
-    await Deno.writeTextFile(join(targetDir, "buttons.min.css"), buttons);
-
-    // write version file
-    await Deno.writeTextFile(join(targetDir, "VERSION"), version);
+    await downloadOpenprops({
+      openPropsVersion: version,
+      outPath: options?.outPath,
+    });
   })
   .parse(
     Deno.args,
