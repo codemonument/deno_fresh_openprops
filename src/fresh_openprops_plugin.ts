@@ -46,7 +46,7 @@ export async function FreshOpenProps(rawOptions?: PluginOptions) {
   }
 
   const postcssRoute = {
-    path: "postcss/[...path]",
+    path: "/postcss/[...path]",
     handler: async (
       req: Request,
       ctx: HandlerContext,
