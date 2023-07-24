@@ -27,12 +27,17 @@ const PluginOptions = z.object({
   isProd: z.boolean().optional().default(false),
   cssInputPath: z.string().optional().default(`css`),
   postcssModuleDirs: z.array(z.string()).optional().default([]),
-  openpropsVersion: z.union([ZodSemver, z.literal("latest")]).default("latest"),
+  openpropsVersion: z.union([z.string(), z.literal("latest")]).optional()
+    .default(
+      "latest",
+    ),
+  openpropsCssDir: z.string().optional().default("css_deps/open-props"),
 });
 
 export type PluginOptions = z.infer<typeof PluginOptions>;
+export type RawPluginOptions = Partial<PluginOptions>;
 
-export async function FreshOpenProps(rawOptions?: PluginOptions) {
+export async function FreshOpenProps(rawOptions?: RawPluginOptions) {
   // Throws when option parsing fails
   const { cssInputPath, postcssModuleDirs, isProd, doPrefillCssCache } =
     PluginOptions.parse(
@@ -40,7 +45,7 @@ export async function FreshOpenProps(rawOptions?: PluginOptions) {
     );
 
   // Should only happen once, since this plugin is only initialized once
-  await initPostcssInstance(postcssModuleDirs);
+  await initPostcssInstance({ additionalModuleDirectories: postcssModuleDirs });
 
   if (doPrefillCssCache) {
     await prefillCssCache({ cssInputPath });
