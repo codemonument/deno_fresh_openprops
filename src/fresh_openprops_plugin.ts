@@ -5,8 +5,10 @@ import { loadCss } from "./css-cache/cssCache.ts";
 import { initPostcssInstance } from "./css-cache/postcssInstance.ts";
 import { Plugin } from "./deps/fresh.ts";
 import type { HandlerContext } from "./deps/fresh.ts";
-import { log } from "./deps/std.ts";
-import { z, ZodSemver } from "./deps/zod.ts";
+import { fs, log, path } from "./deps/std.ts";
+import { z } from "./deps/zod.ts";
+import { downloadOpenpropsCss } from "./utils/download_openprops_css.ts";
+import { ZodOpenPropsVersion } from "./utils/zod_openprops_version.ts";
 
 log.setup({
   handlers: {
@@ -27,11 +29,8 @@ const PluginOptions = z.object({
   isProd: z.boolean().optional().default(false),
   cssInputPath: z.string().optional().default(`css`),
   postcssModuleDirs: z.array(z.string()).optional().default([]),
-  openpropsVersion: z.union([z.string(), z.literal("latest")]).optional()
-    .default(
-      "latest",
-    ),
-  openpropsCssDir: z.string().optional().default("css_deps/open-props"),
+  openpropsVersion: ZodOpenPropsVersion,
+  postcssModuleBaseDir: z.string().optional().default("css_deps"),
 });
 
 export type PluginOptions = z.infer<typeof PluginOptions>;
@@ -39,13 +38,29 @@ export type RawPluginOptions = Partial<PluginOptions>;
 
 export async function FreshOpenProps(rawOptions?: RawPluginOptions) {
   // Throws when option parsing fails
-  const { cssInputPath, postcssModuleDirs, isProd, doPrefillCssCache } =
-    PluginOptions.parse(
-      rawOptions,
-    );
+  const {
+    cssInputPath,
+    postcssModuleDirs,
+    isProd,
+    doPrefillCssCache,
+    postcssModuleBaseDir,
+    openpropsVersion,
+  } = PluginOptions.parse(
+    rawOptions,
+  );
+
+  // TODO: Improve guard to only download files when the specific version is not there
+  if (!isProd) {
+    await downloadOpenpropsCss({
+      openpropsVersion,
+      outPath: path.join(postcssModuleBaseDir, "open-props"),
+    });
+  }
+
+  postcssModuleDirs.push(postcssModuleBaseDir);
 
   // Should only happen once, since this plugin is only initialized once
-  await initPostcssInstance({ additionalModuleDirectories: postcssModuleDirs });
+  await initPostcssInstance({ postcssModuleDirs });
 
   if (doPrefillCssCache) {
     await prefillCssCache({ cssInputPath });

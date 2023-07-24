@@ -6,22 +6,33 @@ import postcssJitProps from "https://esm.sh/postcss-jit-props@1.0.13";
 import pDefer from "https://esm.sh/p-defer@4.0.0";
 import { log } from "../deps/std.ts";
 import { getLatestOpenProps } from "../utils/getLatestOpenProps.ts";
+import { z } from "../deps/zod.ts";
+import { ZodOpenPropsVersion } from "../utils/zod_openprops_version.ts";
 // Note: OpenProps is imported dynamically below!
 
 const deferred = pDefer<ReturnType<typeof postcss>>();
 export const postcssInstancePromise = deferred.promise;
 
+const Options = z.object({
+  postcssModuleDirs: z.array(z.string()).optional().default([]),
+  openPropsVersion: ZodOpenPropsVersion,
+});
+
 /**
- * CAUTION: This can only be called once per application initialization
+ * CAUTION 1: This can only be called once per application initialization
+ *
+ * CAUTIION 2: This postcss instance needs a local copy of the OpenProps css files!
+ * The src folder of these is expected in postcssModuleDirs
  * @param options
  */
 export async function initPostcssInstance(
-  additionalModuleDirectories?: string[],
-  openPropsVersion: "latest" | string = "latest",
+  options: Partial<z.infer<typeof Options>>,
 ) {
   const logger = log.getLogger("FreshOpenProps");
+  const { openPropsVersion, postcssModuleDirs } = Options
+    .parse(options);
 
-  // Dynamic import OpenProps
+  // Dynamic import of OpenProps from esm.sh
   const openPropsUrl = (openPropsVersion === "latest")
     ? `https://esm.sh/open-props`
     : `https://esm.sh/open-props@${openPropsVersion}`;
@@ -34,20 +45,13 @@ export async function initPostcssInstance(
     } (latest: ${openPropsLatestVersion})`,
   );
 
-  // console.log(Object.keys(OpenPropsDynamic.default));
-
-  const additionalModuleDirs = additionalModuleDirectories ?? [];
   const instance = postcss([
     postcssImport({
-      addModulesDirectories: [
-        ...additionalModuleDirs,
-        "css_deps",
-      ],
+      addModulesDirectories: postcssModuleDirs,
     }),
     postcssJitProps(OpenPropsDynamic.default),
   ]);
 
   deferred.resolve(instance);
-
   await postcssInstancePromise;
 }

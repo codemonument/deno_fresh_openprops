@@ -21,7 +21,7 @@ export async function downloadOpenpropsCss(options: RawOptions) {
     : openpropsVersion;
 
   logger.info(
-    `downloadOpenprops with Version ${targetVersion} (latest: ${openpropsLatestVersion})`,
+    `downloadOpenpropsCss with Version ${targetVersion} (latest: ${openpropsLatestVersion})`,
   );
 
   const baseUrl = `https://unpkg.com/open-props@${targetVersion}`;
