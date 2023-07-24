@@ -372,6 +372,7 @@
     "https://deno.land/x/zod@v3.21.4/locales/en.ts": "a7a25cd23563ccb5e0eed214d9b31846305ddbcdb9c5c8f508b108943366ab4c",
     "https://deno.land/x/zod@v3.21.4/mod.ts": "64e55237cb4410e17d968cd08975566059f27638ebb0b86048031b987ba251c4",
     "https://deno.land/x/zod@v3.21.4/types.ts": "b5d061babea250de14fc63764df5b3afa24f2b088a1d797fc060ba49a0ddff28",
+    "https://deno.land/x/zod_semver@1.0.2/mod.ts": "e0c5efb5e30666686249f85146e28f5f5ecec1a834af1e3037609182ff5564ee",
     "https://esm.sh/*preact-render-to-string@6.2.0": "2fcd0cc4867a4cde496cb855ca3cdb4e83983946cf2eae06392551c538acf8ea",
     "https://esm.sh/@kvs/memorystorage@2.1.3": "2f5b88bbcd364257322160d7cd4aa097d8a1cd29af48781c5a416d06f8b9d839",
     "https://esm.sh/open-props@1.5.10": "c27d8552d01100831898c7dc916d5425bc01fb3d9e921b5a31576d447a8a877d",
