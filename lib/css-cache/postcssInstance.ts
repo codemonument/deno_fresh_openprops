@@ -9,7 +9,6 @@ import OpenProps from "https://esm.sh/open-props@1.5.10";
 import pDefer from "https://esm.sh/p-defer@4.0.0";
 
 const deferred = pDefer<ReturnType<typeof postcss>>();
-
 export const postcssInstancePromise = deferred.promise;
 
 /**
