@@ -8,15 +8,13 @@ import { FreshOpenProps } from "../mod.ts";
 import { start } from "$fresh/server.ts";
 import manifest from "./fresh.gen.ts";
 
-const openpropsPlugin = await FreshOpenProps({
-  isProd: false,
-  doPrefillCssCache: true,
-  cssInputPath: "example/css",
-  postcssModuleDirs: ["example/css_deps"],
-});
-
 await start(manifest, {
   plugins: [
-    openpropsPlugin,
+    await FreshOpenProps({
+      isProd: false,
+      doPrefillCssCache: true,
+      cssInputPath: "example/css",
+      postcssModuleDirs: ["example/css_deps"],
+    }),
   ],
 });
