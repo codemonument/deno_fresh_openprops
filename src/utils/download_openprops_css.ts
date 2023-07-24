@@ -1,26 +1,27 @@
 import { fs, log, path } from "../deps/std.ts";
-import { z, ZodSemver } from "../deps/zod.ts";
+import { z } from "../deps/zod.ts";
 import { getLatestOpenProps } from "./getLatestOpenProps.ts";
+import { ZodOpenPropsVersion } from "./zod_openprops_version.ts";
 
 const Options = z.object({
-  openPropsVersion: z.union([ZodSemver, z.literal("latest")]).optional()
+  openpropsVersion: ZodOpenPropsVersion
     .default("latest"),
   outPath: z.string().optional().default("css_deps/open-props"),
 });
 
-export async function downloadOpenprops(
-  options: { openPropsVersion?: string; outPath?: string },
-) {
-  const logger = log.getLogger("FreshOpenProps");
-  const { openPropsVersion, outPath } = Options.parse(options);
+type RawOptions = Partial<z.infer<typeof Options>>;
 
-  const openPropsLatestVersion = await getLatestOpenProps();
-  const targetVersion = openPropsVersion === "latest"
-    ? openPropsLatestVersion
-    : openPropsVersion;
+export async function downloadOpenpropsCss(options: RawOptions) {
+  const logger = log.getLogger("FreshOpenProps");
+  const { openpropsVersion, outPath } = Options.parse(options);
+
+  const openpropsLatestVersion = await getLatestOpenProps();
+  const targetVersion = openpropsVersion === "latest"
+    ? openpropsLatestVersion
+    : openpropsVersion;
 
   logger.info(
-    `downloadOpenprops with Version ${targetVersion} (latest: ${openPropsLatestVersion})`,
+    `downloadOpenprops with Version ${targetVersion} (latest: ${openpropsLatestVersion})`,
   );
 
   const baseUrl = `https://unpkg.com/open-props@${targetVersion}`;
