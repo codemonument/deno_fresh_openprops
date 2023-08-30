@@ -7,9 +7,12 @@
   "compilerOptions": {
     "strict": true
   },
-  // IMPORTANT: Only use import_map.json for testing dependencies,
+
+  // IMPORTANT: Only use these imports for testing dependencies,
   // since it will not be resolved when mod.ts is used as library from outside!
-  "importMap": "import_map.json",
+  "imports": {
+    "@mod": "./mod.ts"
+  },
 
   // Docs for Deno Tasks: https://deno.land/manual@v1.27.1/tools/task_runner
   "tasks": {
