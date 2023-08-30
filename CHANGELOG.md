@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.0 - 2023-07-25 (WIP)
+## 2.0.0 - 2023-08-30
 
 - Big Change: This is now a fully featured fresh plugin, since they can now add routes to the host app! (See usage in readme)
 - It's now fully self-contained:
