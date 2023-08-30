@@ -4,8 +4,8 @@ import {
 } from "https://deno.land/x/cliffy@v0.25.7/mod.ts";
 import { ZodSemver } from "https://deno.land/x/zod_semver@1.1.0/mod.ts";
 // CAUTION: Do not import via ./mod.ts, otherwise this script needs dependency access to $fresh! :O
-import { downloadOpenpropsCss } from "./src/utils/download_openprops.ts";
-import { ZodOpenPropsVersion } from "./src/utils/zod_openprops_version";
+import { downloadOpenpropsCss } from "./src/utils/download_openprops_css.ts";
+import { ZodOpenPropsVersion } from "./src/utils/zod_openprops_version.ts";
 
 /**
  * This file is a little cliffy command line script to download a specific version of openprops into the local repositiory
@@ -39,7 +39,7 @@ await new Command()
     // Alternative: Find latest version manually via: https://unpkg.com/open-props
     const [version] = args;
     await downloadOpenpropsCss({
-      openPropsVersion: version,
+      openpropsVersion: version,
       outPath: options?.outPath,
     });
   })
