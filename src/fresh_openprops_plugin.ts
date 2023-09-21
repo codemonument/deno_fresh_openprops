@@ -112,7 +112,7 @@ export async function FreshOpenProps(rawOptions?: RawPluginOptions) {
 
       logger.debug(`PostCSS found in cache: ${fsPath}`, { fileHash });
 
-      const cachingHeader: [string, string][] = (isProd)
+      const cachingHeader: [string, string][] = isProd
         ? [
           // Cache the css files for min 1h (3600sek) and max-age=604800, then use the old file while revalidating
           [
