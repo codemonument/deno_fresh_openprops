@@ -2,7 +2,6 @@ import {
   ArgumentValue,
   Command,
 } from "https://deno.land/x/cliffy@v0.25.7/mod.ts";
-import { ZodSemver } from "https://deno.land/x/zod_semver@1.1.0/mod.ts";
 // CAUTION: Do not import via ./mod.ts, otherwise this script needs dependency access to $fresh! :O
 import { downloadOpenpropsCss } from "./src/utils/download_openprops_css.ts";
 import { ZodOpenPropsVersion } from "./src/utils/zod_openprops_version.ts";
