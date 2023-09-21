@@ -5,13 +5,23 @@
  */
 {
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
   },
 
-  // IMPORTANT: Only use these imports for testing dependencies,
+  // !!! IMPORTANT: Only use these imports for testing dependencies, !!!
   // since it will not be resolved when mod.ts is used as library from outside!
   "imports": {
-    "@mod": "./mod.ts"
+    "@mod": "./mod.ts",
+    "$std/": "https://deno.land/std@0.200.0/",
+    "$fresh/": "https://deno.land/x/fresh@1.4.2/",
+    "preact": "https://esm.sh/preact@10.17.1",
+    "preact/": "https://esm.sh/preact@10.17.1/",
+    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.1",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.4.0"
   },
 
   // Docs for Deno Tasks: https://deno.land/manual@v1.27.1/tools/task_runner
@@ -19,5 +29,15 @@
     "start": "deno task example",
     "example": "deno run -A --watch=example/static/,example/routes/,example/css example/dev.ts",
     "download-openprops": "deno run --allow-net --allow-write --allow-read ./download-openprops-cli.ts --outPath example/css_deps/open-props"
+  },
+
+  "lock": false,
+  "lint": {
+    "rules": {
+      "tags": [
+        "fresh",
+        "recommended"
+      ]
+    }
   }
 }
